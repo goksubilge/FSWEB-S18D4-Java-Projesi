@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -30,10 +31,22 @@ public class Customer {
     @Column(name="salary")
     private double salary;
 
+    // one customer one address
+    // if customer=delete => address=delete
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name= "address_id")
     private Address address;
 
+    // one customer many account
+    // if customer=delete => account=delete
+
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL})
     private List<Account> accountList;
+    public void addAccount(Account account){
+        if(accountList == null){
+            accountList = new ArrayList<>();
+        }
+        accountList.add(account);
+    }
 }

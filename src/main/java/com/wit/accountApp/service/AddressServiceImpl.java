@@ -10,8 +10,14 @@ import java.util.Optional;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-    @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    public AddressServiceImpl(AddressRepository addressRepository) {
+        this.addressRepository = addressRepository;
+    }
+
+
     @Override
     public List<Address> findAll() {
         return addressRepository.findAll();

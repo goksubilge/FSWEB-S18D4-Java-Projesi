@@ -22,8 +22,10 @@ public class Account {
     @Column(name="money_amount")
     private double moneyAmount;
 
+    // one customer many account
+    // if account=delete => customer kalsın.
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name= "customer_id")
-    // @JoinColumn => foregn key
+    // @JoinColumn => foreign key
     private Customer customer;
 }

@@ -32,21 +32,11 @@ public class Address {
     @Column(name="description")
     private String description;
 
+    // one customer one address
+    // if address=delete => customer kalsın
+
     @OneToOne(mappedBy = "address", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name="address_id")
     // @JoinColumn => foriegn key
     private Customer customer;
-
-    // bir customer bir adrese sahip olabilir.
-    // address silinince customer silinmesin.
-
-    /*
-    {
-    "street":"banana street",
-    "no":"2",
-    "city":"Boston",
-    "country":"USA",
-    "description":"near by market"
-    }
-     */
 }
