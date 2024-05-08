@@ -21,17 +21,32 @@ public class Address {
     private String street;
 
     @Column(name="no")
-    private String no;
+    private int no;
 
     @Column(name="city")
     private String city;
 
     @Column(name="country")
-    private double country;
+    private String country;
 
     @Column(name="description")
-    private double description;
+    private String description;
 
     @OneToOne(mappedBy = "address", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JoinColumn(name="address_id")
+    // @JoinColumn => foriegn key
     private Customer customer;
+
+    // bir customer bir adrese sahip olabilir.
+    // address silinince customer silinmesin.
+
+    /*
+    {
+    "street":"banana street",
+    "no":"2",
+    "city":"Boston",
+    "country":"USA",
+    "description":"near by market"
+    }
+     */
 }

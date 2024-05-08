@@ -24,6 +24,6 @@ public class Account {
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name= "customer_id")
+    // @JoinColumn => foregn key
     private Customer customer;
-
 }
