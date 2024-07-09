@@ -42,11 +42,12 @@ public class Customer {
     // if customer=delete => account=delete
 
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL})
-    private List<Account> accountList;
-    public void addAccount(Account account){
+    private List<Account> accountList = new ArrayList<>();
+
+/*    public void addAccount(Account account){
         if(accountList == null){
             accountList = new ArrayList<>();
         }
         accountList.add(account);
-    }
+    }*/
 }
