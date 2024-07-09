@@ -1,7 +1,9 @@
 package com.wit.accountApp.controller;
 
+import com.wit.accountApp.dto.CustomerResponse;
 import com.wit.accountApp.entity.Customer;
 import com.wit.accountApp.service.CustomerService;
+import com.wit.accountApp.util.EntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,35 +21,41 @@ public class CustomerController {
     }
 
     @GetMapping("/")
-    public List<Customer> findAll() {
-        return  customerService.findAll();
+    public List<CustomerResponse> findAll() {
+        return EntityConverter.findResults(customerService.findAll());
+        // List<Customer> dönmeyecek, <CustomerResponse> dönecek. util --> EntityConverter eklemesi yapıyoruz.
     }
 
     @GetMapping("/{id}")
-    public Customer find(@PathVariable long id) {
-        return  customerService.find(id);
+    public CustomerResponse find(@PathVariable long id) {
+        return  EntityConverter.findResult(customerService.find(id));
+        // util --> EntityConverter eklemesi yapıyoruz.
     }
 
     @PostMapping("/")
-    public Customer save(@RequestBody Customer customer){
-        return customerService.save(customer);
+    public CustomerResponse save(@RequestBody Customer customer){
+        return EntityConverter.findResult(customerService.save(customer));
+        // util --> EntityConverter eklemesi yapıyoruz.
     }
 
     @PutMapping("/{id}")
-    public Customer save(@RequestBody Customer customer, @PathVariable long id ){
+    public CustomerResponse save(@RequestBody Customer customer, @PathVariable long id ){
         Customer foundCustomer = customerService.find(id);
         if (foundCustomer != null) {
             customer.setId(id);
-            return customerService.save(customer);
+            return EntityConverter.findResult(customerService.save(customer));
+            // util --> EntityConverter eklemesi yapıyoruz.
         }
         // TODO throw exception
         return null;
     }
 
     @DeleteMapping("/{id}")
-    public Customer delete(@PathVariable long id){
-        return customerService.delete(id);
+    public CustomerResponse delete(@PathVariable long id){
+        return EntityConverter.findResult(customerService.delete(id));
+        // util --> EntityConverter eklemesi yapıyoruz.
     }
+
 }
 
 // ilk önce addressCont oluşturdum sonra customerController.
