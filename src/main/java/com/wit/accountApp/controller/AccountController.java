@@ -53,9 +53,41 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public Account delete(@PathVariable long id){
-        return accountService.delete(id);
-
+    public AccountResponse delete(@PathVariable long id){
+        Account account = accountService.find(id);
+        if(account != null){
+            accountService.delete(id);
+            return new AccountResponse(account.getId(), account.getAccountName(), account.getMoneyAmount(),
+                    new CustomerResponse(account.getCustomer().getId(),
+                            account.getCustomer().getEmail(),
+                            account.getCustomer().getSalary()));
+        } else {
+            throw new RuntimeException("No account found");
+        }
     }
 
+    /* PUT Mapping */   /* bu kısım zorlu, challange, 01:33:00 te anlatıyor. tekrar et*/
+    @PutMapping("/{customerId}")
+    public AccountResponse update(@RequestBody Account account, @PathVariable long customerId) {
+        Customer customer = customerService.find(customerId);
+
+        Account foundAccount = null;
+        for(Account account1: customer.getAccountList()){
+            if(account.getId() == account1.getId()){
+                foundAccount = account1;
+            }
+        }
+
+        if(foundAccount == null){
+            throw new RuntimeException("Account with given id is not exist: " + account.getId());
+        }
+
+        int index = customer.getAccountList().indexOf(foundAccount);
+        customer.getAccountList().set(index, account);
+        account.setCustomer(customer);
+        accountService.save(account);
+
+        return new AccountResponse(account.getId(), account.getAccountName(), account.getMoneyAmount(),
+                new CustomerResponse(customer.getId(), customer.getEmail(), customer.getSalary()));
+    }
 }
